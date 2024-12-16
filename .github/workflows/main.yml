@@ -1,6 +1,9 @@
 name: Universal Code Scan Workflow
 
 on:
+  push:
+    branches:
+      -master
   workflow_call:
     inputs:
       project_key:
