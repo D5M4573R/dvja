@@ -1,0 +1,17 @@
+name: Trigger Code Scan
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-code-scan:
+    uses: owner-org/repo-name/.github/workflows/code-scan.yml
+    with:
+      project_key: "my-repo-project-key"
+      sonar_org: "my-sonar-org"
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
