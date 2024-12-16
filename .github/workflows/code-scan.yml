@@ -1,0 +1,50 @@
+name: Universal Code Scan Workflow
+
+on:
+  workflow_call:
+    inputs:
+      project_key:
+        required: true
+        type: string
+      sonar_org:
+        required: true
+        type: string
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Detect Language and Install Dependencies
+      run: |
+        if [[ -f "pom.xml" ]]; then
+          echo "Java detected"
+          sudo apt install -y openjdk-11-jdk maven
+          mvn clean install
+        elif [[ -f "package.json" ]]; then
+          echo "Node.js detected"
+          sudo apt install -y nodejs npm
+          npm install
+        elif [[ -f "composer.json" ]]; then
+          echo "PHP detected"
+          sudo apt install -y php-cli composer
+          composer install
+        else
+          echo "Language not recognized - Skipping build"
+        fi
+
+    - name: SonarQube Code Scan
+      uses: sonarsource/sonarqube-scan-action@master
+      with:
+        projectBaseDir: .
+        args: >
+          -Dsonar.organization=${{ inputs.sonar_org }}
+          -Dsonar.projectKey=${{ inputs.project_key }}
+          -Dsonar.sources=.
+          -Dsonar.exclusions=**/node_modules/**,**/tests/**,**/vendor/**
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
