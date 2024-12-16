@@ -8,7 +8,7 @@ on:
 
 jobs:
   run-code-scan:
-    uses: owner-org/repo-name/.github/workflows/code-scan.yml
+    uses: D5M4573R/DVWA/.github/workflows/code-scan.yml@main
     with:
       project_key: "my-repo-project-key"
       sonar_org: "my-sonar-org"
