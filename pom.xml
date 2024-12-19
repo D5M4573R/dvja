@@ -21,7 +21,6 @@
         </repository>
     </repositories>
 
-    <dependencies>
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
