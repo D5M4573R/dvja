@@ -15,16 +15,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
+      - name: Clear Maven cache
+        run: rm -rf ~/.m2/repository
+     
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: 'zulu'
           cache: maven
-
-      - name: Clear Maven cache
-        run: rm -rf ~/.m2/repository
 
       - name: Build and analyze
         env:
