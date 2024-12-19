@@ -27,6 +27,10 @@ jobs:
           distribution: 'zulu'
           cache: maven
 
+      # **Remove Old Maven Plugin Cache**
+      - name: Clear Maven plugin cache
+        run: rm -rf ~/.m2/repository/org/apache/maven/plugins
+
       # Cache Maven packages
       - name: Cache Maven dependencies
         uses: actions/cache@v4
