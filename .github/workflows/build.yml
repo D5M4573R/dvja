@@ -27,11 +27,11 @@ jobs:
           distribution: 'zulu'
           cache: maven
 
-      # **Remove Old Maven Plugin Cache**
-      - name: Clear Maven plugin cache
-        run: rm -rf ~/.m2/repository/org/apache/maven/plugins
+      # Clear Maven cache
+      - name: Clear Maven cache
+        run: rm -rf ~/.m2/repository
 
-      # Cache Maven packages
+      # Cache Maven dependencies
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
@@ -40,7 +40,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Cache SonarQube packages
+      # Cache SonarQube dependencies
       - name: Cache SonarQube dependencies
         uses: actions/cache@v4
         with:
@@ -55,6 +55,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          mvn clean verify -U org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -Dsonar.projectKey=D5M4573R_dvja_614deb9d-dc99-4ee5-bdae-e2311b21f457 \
           -Dsonar.projectName='dvja'
